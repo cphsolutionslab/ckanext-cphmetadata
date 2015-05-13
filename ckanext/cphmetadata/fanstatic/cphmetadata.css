@@ -1,0 +1,17 @@
+.lang-container {
+  float: right !important;
+}
+.site-footer {
+  background-image: url('/footer.png');
+  background-position: center bottom;
+  background-repeat:no-repeat;
+}
+.footer-about {
+  text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.6);
+}
+.cphlogo {
+    height: 50px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
