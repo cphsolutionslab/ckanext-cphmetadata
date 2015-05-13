@@ -2,7 +2,7 @@
   float: right !important;
 }
 .site-footer {
-  background-image: url('/footer.png');
+  background-image: url('/images/footer.png');
   background-position: center bottom;
   background-repeat:no-repeat;
 }
