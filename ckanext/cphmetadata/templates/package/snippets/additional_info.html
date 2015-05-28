@@ -1,16 +1,40 @@
 {% ckan_extends %}
 
 {% block extras %}
-  {% if pkg_dict.custom_text %}
-    <tr>
-      <th scope="row" class="dataset-label">{{ _("Custom Text") }}</th>
-      <td class="dataset-details">{{ pkg_dict.custom_text }}</td>
-    </tr>
-  {% endif %}
   {% if pkg_dict.update_frequency %}
     <tr>
       <th scope="row" class="dataset-label">{{ _("Update Frequency") }}</th>
       <td class="dataset-details">{{ h.get_frequency_translation(pkg_dict.update_frequency) }}</td>
+    </tr>
+  {% endif %}
+  {% if pkg_dict.department %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Department") }}</th>
+      <td class="dataset-details">{{ pkg_dict.department }}</td>
+    </tr>
+  {% endif %}
+  {% if pkg_dict.office %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Office") }}</th>
+      <td class="dataset-details">{{ pkg_dict.office }}</td>
+    </tr>
+  {% endif %}
+  {% if pkg_dict.kkkort %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Internally at KKkort") }}</th>
+      <td class="dataset-details"><i class="icon-check"></i></td>
+    </tr>
+  {% endif %}
+  {% if pkg_dict.copenhagenkortet %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Externally at Københavnerkortet") }}</th>
+      <td class="dataset-details"><i class="icon-check"></i></td>
+    </tr>
+  {% endif %}
+  {% if pkg_dict.datakk %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("Externally at data.kk.dk") }}</th>
+      <td class="dataset-details"><i class="icon-check"></i></td>
     </tr>
   {% endif %}
   {% for extra in h.sorted_extras(pkg_dict.extras) %}

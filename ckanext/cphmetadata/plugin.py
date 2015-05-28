@@ -35,20 +35,36 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         # let's grab the default schema in our plugin
         schema = super(CphmetadataPlugin, self).create_package_schema()
         schema.update({
-            'custom_text': [toolkit.get_validator('ignore_missing'),
-                            toolkit.get_converter('convert_to_extras')],
             'update_frequency': [frequency_validator,
+                            toolkit.get_converter('convert_to_extras')],
+            'department': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'office': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'kkkort': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'copenhagenkortet': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'datakk': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')]
         })
         return schema
 
     def update_package_schema(self):
         schema = super(CphmetadataPlugin, self).update_package_schema()
-        #our custom field
+        #our custom fields
         schema.update({
-            'custom_text': [toolkit.get_validator('ignore_missing'),
-                            toolkit.get_converter('convert_to_extras')],
             'update_frequency': [frequency_validator,
+                            toolkit.get_converter('convert_to_extras')],
+            'department': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'office': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'kkkort': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'copenhagenkortet': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'datakk': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')]
         })
         return schema
@@ -59,7 +75,17 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'custom_text': [toolkit.get_converter('convert_from_extras'),
                             toolkit.get_validator('ignore_missing')],
             'update_frequency': [frequency_validator,
-                            toolkit.get_converter('convert_from_extras')]
+                            toolkit.get_converter('convert_from_extras')],
+            'department': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
+            'office': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
+            'kkkort': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
+            'copenhagenkortet': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
+            'datakk': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
         })
         return schema
 
