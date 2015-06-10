@@ -12,14 +12,23 @@ freqmap = {
     'aldrig': 'never'
 }
  
+#orgmap = {
+    #"økf": 'ec475e17-45a7-48be-aec9-01d2d516d8fd',#"Økonomiforvaltningen",
+    #"buf": 'f1c73fe7-7448-4301-ab04-29b6a640cfcf',#"Børne- og ungdomsforvaltningen",
+    #"kff": '0b3d54aa-1f66-4c1b-93e3-1bc7eb6fa2e6',#"Kultur- og Fritidsforvaltningen",
+    #"tmf": 'f1f42eb6-2e71-4e2f-ae18-c001b4029f37',#"Teknik- og Miljøforvaltningen",
+    #"suf": '7a25a01b-3f25-4b3b-aaa8-71acf58dce1d',#"Sundheds- og omsorgsforvaltningen",
+    #"sof": 'a58a461d-7081-43de-b8d2-7718bf1ec0d9',#"Socialforvaltningen",
+    #"bif": '21758777-9c28-4072-a913-24a64750c1cb' #"Beskæftigelses- og Integrationsforvaltningen"
+#}
 orgmap = {
-    "økf": 'ec475e17-45a7-48be-aec9-01d2d516d8fd',#"Økonomiforvaltningen",
-    "buf": 'f1c73fe7-7448-4301-ab04-29b6a640cfcf',#"Børne- og ungdomsforvaltningen",
-    "kff": '0b3d54aa-1f66-4c1b-93e3-1bc7eb6fa2e6',#"Kultur- og Fritidsforvaltningen",
-    "tmf": 'f1f42eb6-2e71-4e2f-ae18-c001b4029f37',#"Teknik- og Miljøforvaltningen",
-    "suf": '7a25a01b-3f25-4b3b-aaa8-71acf58dce1d',#"Sundheds- og omsorgsforvaltningen",
-    "sof": 'a58a461d-7081-43de-b8d2-7718bf1ec0d9',#"Socialforvaltningen",
-    "bif": '21758777-9c28-4072-a913-24a64750c1cb' #"Beskæftigelses- og Integrationsforvaltningen"
+    "økf": '1d1a4698-82d5-4586-bd6b-f6166b8db831',#"Økonomiforvaltningen",
+    "buf": '1d1a4698-82d5-4586-bd6b-f6166b8db831',#"Børne- og ungdomsforvaltningen",
+    "kff": '1d1a4698-82d5-4586-bd6b-f6166b8db831',#"Kultur- og Fritidsforvaltningen",
+    "tmf": '1d1a4698-82d5-4586-bd6b-f6166b8db831',#"Teknik- og Miljøforvaltningen",
+    "suf": '1d1a4698-82d5-4586-bd6b-f6166b8db831',#"Sundheds- og omsorgsforvaltningen",
+    "sof": '1d1a4698-82d5-4586-bd6b-f6166b8db831',#"Socialforvaltningen",
+    "bif": '1d1a4698-82d5-4586-bd6b-f6166b8db831' #"Beskæftigelses- og Integrationsforvaltningen"
 }
 skipped = []
 added = []
@@ -51,7 +60,8 @@ def parse_data():
             parsed = {
                 'name': hit['datasætnavn'],
                 'title': hit['titel'],
-                'description': hit['beskrivelse'] if 'beskrivelse' in hit else None,
+                'notes': hit['beskrivelse'] if 'beskrivelse' in hit else None,
+                'editor': hit['redigering'] if 'redigering' in hit else None,
                 'tag_string': hit['tags'] if 'tags' in hit else None,
                 'update_frequency': freqmap[hit['opdateringsfrekvens']],
                 'maintainer': hit['kontaktperson'] if 'kontaktperson' in hit else None,
@@ -71,13 +81,13 @@ def parse_data():
 # Put the details of the dataset we're going to create into a dict.
 def create_dataset(data):
     print('Inserting dataset!')
-    url = 'http://127.0.0.1:5000/api/action/package_create'
+    url = 'http://metadata.bydata.dk/api/action/package_create'
     headers = {
-        'Authorization': 'd4a7db0b-ba85-4d67-9c3d-1e6853e29d29',
+        'Authorization': 'api-key-here',
         'Content-type': 'application/json'
     }
     req = requests.post(url, json.dumps(data), headers=headers)
-    print(req)
+    print(req.__dict__)
 
 parse_data()
 print("skipped: {0}".format(len(skipped)))
