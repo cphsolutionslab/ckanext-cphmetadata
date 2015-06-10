@@ -47,7 +47,8 @@
   {% block secondary_help_content %}{% endblock %}
 
   {% block package_info %}
-    {% snippet 'package/snippets/info.html', pkg=pkg %}
+    {# hide followers information block #}
+    {#% snippet 'package/snippets/info.html', pkg=pkg %#}
   {% endblock %}
 
   {% block package_organization %}
@@ -58,11 +59,13 @@
   {% endblock %}
 
   {% block package_social %}
-    {% snippet "snippets/social.html" %}
+    {# hide social buttons block #}
+    {#% snippet "snippets/social.html" %#}
   {% endblock %}
 
   {% block package_license %}
-    {% snippet "snippets/license.html", pkg_dict=pkg %}
+    {# hide licensing information block #}
+    {#% snippet "snippets/license.html", pkg_dict=pkg %#}
   {% endblock %}
 
 {% endblock %}

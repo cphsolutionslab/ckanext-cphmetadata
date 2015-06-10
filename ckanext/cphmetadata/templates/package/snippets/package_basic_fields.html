@@ -12,6 +12,10 @@
   </div>
 </div>
 {% endblock %}
+{% block package_basic_fields_description %}
+  {# Replaced markdown with textarea #}
+  {{ form.textarea('notes', id='field-notes', label=_('Description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
+{% endblock %}
 {% block package_basic_fields_org %}
   {# if we have a default group then this wants remembering #}
   {% if data.group_id %}
@@ -68,11 +72,6 @@
   {% if show_organizations_selector and show_visibility_selector %}
     </div>
   {% endif %}
-  {% block display_source %}
-    {{ form.checkbox('kkkort', label=_('Internally at KKkort'), value='True', checked=data.kkkort=='True') }}
-    {{ form.checkbox('copenhagenkortet', label=_('Externally at Københavnerkortet'), value='True', checked=data.copenhagenkortet=='True') }}
-    {{ form.checkbox('datakk', label=_('Externally at data.kk.dk'), value='True', checked=data.datakk=='True') }}
-  {% endblock %}
 
 
   {% if data.id and h.check_access('package_delete', {'id': data.id}) and data.state != 'active' %}
@@ -88,7 +87,6 @@
   {% endif %}
 
 {% endblock %}
-{# hide fields e.g license
 {% block package_basic_fields_license %}
+{# hide license #}
 {% endblock %}
-#}
