@@ -4,8 +4,9 @@
 {# hide disclaimer #}
 {% endblock %}
 {% block save_button %}
-  <button class="btn btn-primary" type="submit" name="save">{% block save_button_text %}{{ _('Next: Add Data') }}{% endblock %}</button>
   {% if form_style == 'new' %}
     <button class="btn btn-primary" type="submit" name="save" value="go-resource">{% block finish_button_text %}{{ _('Finish') }}{% endblock %}</button>
+  {% else %}
+    <button class="btn btn-primary" type="submit" name="save">{% block save_button_text %}{{ _('Next: Add Data') }}{% endblock %}</button>
   {% endif %}
 {% endblock %}

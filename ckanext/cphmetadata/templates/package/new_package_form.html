@@ -3,9 +3,10 @@
 {% set form_style = c.form_style or c.action %}
 
 {% block stages %}
-  {% if form_style != 'edit' %}
+  {# Only one stage for now...#}
+  {#% if form_style != 'edit' %}
     {{ super() }}
-  {% endif %}
+  {% endif %#}
 {% endblock %}
 
 {% block save_button_text %}
