@@ -21,6 +21,9 @@
     {{ form.checkbox('copenhagenkortet', label=_('Externally at Københavnerkortet'), value='True', checked=data.copenhagenkortet=='True') }}
     {{ form.checkbox('datakk', label=_('Externally at data.kk.dk'), value='True', checked=data.datakk=='True') }}
   {% endblock %}
+  {% block date_updated %}
+    {{ form.input('date_updated', label=_('Updated'), id='field-date-updated', value=data.date_updated, error=errors.date_updated, type='date', classes=['control-medium']) }}
+  {% endblock %}
 
   {% block package_metadata_fields_custom %}
     {% block custom_fields %}

@@ -1,6 +1,8 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
+import ckan.lib.helpers as h
 from ckan.plugins.toolkit import Invalid
+import datetime
 
 def frequency_validator(value, context):
     if value not in ['daily', 'weekly', 'monthly', 'biannually', 'annually', 'infrequently', 'never']:
@@ -18,6 +20,20 @@ def get_frequency_translation(frequency):
         'never': 'Never'
     }
     return freqmap[frequency]
+
+def get_frequency_translation_without_never(frequency):
+    #Same as above, only never is replaced with blank
+    translation = get_frequency_translation(frequency)
+    if(translation == 'Never'):
+        translation = ''
+    return translation
+
+def custom_render_datetime(datetime_):
+    stamp = h._datestamp_to_datetime(datetime_)
+    #Only show dates after 01.07.2015
+    if(stamp >= datetime.datetime(2015, 7, 1)):
+        return h.render_datetime(datetime_, with_hours=False)
+    return False
 
 class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer)
@@ -48,6 +64,8 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'copenhagenkortet': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'datakk': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'date_updated': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')]
         })
         return schema
@@ -69,6 +87,8 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'copenhagenkortet': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'datakk': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'date_updated': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')]
         })
         return schema
@@ -92,6 +112,8 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                             toolkit.get_validator('ignore_missing')],
             'datakk': [toolkit.get_converter('convert_from_extras'),
                             toolkit.get_validator('ignore_missing')],
+            'date_updated': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')]
         })
         return schema
 
@@ -103,11 +125,18 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return []
 
     def get_helpers(self):
-        return {'get_frequency_translation': get_frequency_translation}
+        return {
+            'get_frequency_translation': get_frequency_translation,
+            'get_frequency_translation_without_never': get_frequency_translation_without_never,
+            'custom_render_datetime': custom_render_datetime
+        }
     
     def before_map(self, map):
         ''' IRoutes '''
         #Override new dataset so we can optionally skip resource adding
         pkg_ctrl = 'ckanext.cphmetadata.controllers.package:MetadataPackageController'
+        home_ctrl = 'ckanext.cphmetadata.controllers.home:MetadataHomeController'
         map.connect('add dataset', '/dataset/new', controller=pkg_ctrl, action='new')
+        map.connect('home', '/', controller=home_ctrl, action='index')
         return map
+

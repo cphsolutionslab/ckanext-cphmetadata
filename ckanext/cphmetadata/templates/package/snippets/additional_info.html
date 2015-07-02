@@ -46,8 +46,26 @@
         {% if pkg_dict.update_frequency %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("Update Frequency") }}</th>
-            <td class="dataset-details">{{ h.get_frequency_translation(pkg_dict.update_frequency) }}</td>
+            <td class="dataset-details">{{ h.get_frequency_translation_without_never(pkg_dict.update_frequency) }}</td>
           </tr>
+        {% endif %}
+        {% if pkg_dict.date_updated %}
+          {% set date_updated = h.custom_render_datetime(pkg_dict.date_updated) %}
+          {% if date_updated %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Last Updated") }}</th>
+            <td class="dataset-details">{{ date_updated }}</td>
+          </tr>
+          {% endif %}
+        {% endif %}
+        {% if pkg_dict.metadata_created %}
+          {% set date_created = h.custom_render_datetime(pkg_dict.metadata_created) %}
+          {% if date_created %}
+            <tr>
+              <th scope="row" class="dataset-label">{{ _("Created") }}</th>
+              <td class="dataset-details">{{ date_created }}</td>
+            </tr>
+          {% endif %}
         {% endif %}
         {% if pkg_dict.kkkort %}
           <tr>
@@ -85,25 +103,13 @@
             <td class="dataset-details">{{ pkg_dict.version }}</td>
           </tr>
         {% endif %}
-
-        {% if h.check_access('package_update',{'id':pkg_dict.id}) %}
+        {#Hiding state information #}
+        {#% if h.check_access('package_update',{'id':pkg_dict.id}) %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("State") }}</th>
             <td class="dataset-details">{{ _(pkg_dict.state) }}</td>
           </tr>
-        {% endif %}
-        {% if pkg_dict.metadata_modified %}
-          <tr>
-            <th scope="row" class="dataset-label">{{ _("Last Updated") }}</th>
-            <td class="dataset-details">{{ h.render_datetime(pkg_dict.metadata_modified, with_hours=True) }}</td>
-          </tr>
-        {% endif %}
-        {% if pkg_dict.metadata_created %}
-          <tr>
-            <th scope="row" class="dataset-label">{{ _("Created") }}</th>
-            <td class="dataset-details">{{ h.render_datetime(pkg_dict.metadata_created, with_hours=True) }}</td>
-          </tr>
-        {% endif %}
+        {% endif %#}
       {% block extras scoped %}
         {% for extra in h.sorted_extras(pkg_dict.extras) %}
           {% set key, value = extra %}
