@@ -5,11 +5,13 @@ from ckan.plugins.toolkit import Invalid
 import datetime
 
 def frequency_validator(value, context):
-    if value not in ['daily', 'weekly', 'monthly', 'biannually', 'annually', 'infrequently', 'never']:
+    if value not in ['daily', 'weekly', 'monthly', 'biannually', 'annually', 'infrequently', 'never', 'never_actual']:
         raise Invalid("Invalid frequency")
     return value
 
 def get_frequency_translation(frequency):
+    #It was decided after import that the default should be '', therefore created
+    #another value for never and mapped current never to an empty string.
     freqmap = {
         'daily': 'Daily',
         'weekly': 'Weekly',
@@ -17,16 +19,10 @@ def get_frequency_translation(frequency):
         'biannually': 'Biannually',
         'annually': 'Annually',
         'infrequently': 'Infrequently',
-        'never': 'Never'
+        'never': '',
+        'never_actual': 'Never'
     }
     return freqmap[frequency]
-
-def get_frequency_translation_without_never(frequency):
-    #Same as above, only never is replaced with blank
-    translation = get_frequency_translation(frequency)
-    if(translation == 'Never'):
-        translation = ''
-    return translation
 
 def custom_render_datetime(datetime_):
     stamp = h._datestamp_to_datetime(datetime_)
@@ -127,7 +123,6 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def get_helpers(self):
         return {
             'get_frequency_translation': get_frequency_translation,
-            'get_frequency_translation_without_never': get_frequency_translation_without_never,
             'custom_render_datetime': custom_render_datetime
         }
     

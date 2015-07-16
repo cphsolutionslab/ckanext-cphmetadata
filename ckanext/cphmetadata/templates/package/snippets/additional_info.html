@@ -46,17 +46,14 @@
         {% if pkg_dict.update_frequency %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("Update Frequency") }}</th>
-            <td class="dataset-details">{{ h.get_frequency_translation_without_never(pkg_dict.update_frequency) }}</td>
+            <td class="dataset-details">{{ h.get_frequency_translation(pkg_dict.update_frequency) }}</td>
           </tr>
         {% endif %}
         {% if pkg_dict.date_updated %}
-          {% set date_updated = h.custom_render_datetime(pkg_dict.date_updated) %}
-          {% if date_updated %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("Last Updated") }}</th>
-            <td class="dataset-details">{{ date_updated }}</td>
+            <td class="dataset-details">{{ h.render_datetime(pkg_dict.date_updated, with_hours=False) }}</td>
           </tr>
-          {% endif %}
         {% endif %}
         {% if pkg_dict.metadata_created %}
           {% set date_created = h.custom_render_datetime(pkg_dict.metadata_created) %}
