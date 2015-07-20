@@ -82,6 +82,18 @@
             <td class="dataset-details"><i class="icon-check"></i></td>
           </tr>
         {% endif %}
+        {% if pkg_dict.data_quality %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Data quality") }}</th>
+            <td class="dataset-details">{{ h.get_quality_translation(pkg_dict.data_quality) }}</td>
+          </tr>
+        {% endif %}
+        {% if pkg_dict.quality_note %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Data quality note") }}</th>
+            <td class="dataset-details" property="dc:quality_note">{{ pkg_dict.quality_note }}</td>
+          </tr>
+        {% endif %}
         {% if pkg_dict.url %}
           <tr>
             <th scope="row" class="dataset-label">{{ _('Source') }}</th>
@@ -92,8 +104,6 @@
             {% endif %}
           </tr>
         {% endif %}
-
-
         {% if pkg_dict.version %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("Version") }}</th>

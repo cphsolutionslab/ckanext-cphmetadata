@@ -21,6 +21,21 @@
     {{ form.checkbox('copenhagenkortet', label=_('Externally at Københavnerkortet'), value='True', checked=data.copenhagenkortet=='True') }}
     {{ form.checkbox('datakk', label=_('Externally at data.kk.dk'), value='True', checked=data.datakk=='True') }}
   {% endblock %}
+
+  {% block data_quality %}
+  <div class="control-group">
+    <label for="field-data-quality" class="control-label">{{ _('Data quality') }}</label>
+    <div class="controls">
+      <select id="field-data-quality" name="data_quality">
+        {% for option in [('good', _('Total ajourført')), ('medium', _('Delvist ajourført')), ('bad', _('Mangelfuldt'))] %}
+        <option value="{{ option[0] }}" {% if option[0] == data.data_quality %}selected="selected"{% endif %}>{{ option[1] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  {{ form.input('quality_note', label=_('Data quality note'), id='field-quality-note', value=data.quality_note, error=errors.quality_note, classes=['control-medium']) }}
+  {% endblock %}
+
   {% block date_updated %}
     {{ form.input('date_updated', label=_('Updated'), id='field-date-updated', value=data.date_updated, error=errors.date_updated, type='date', classes=['control-medium']) }}
   {% endblock %}

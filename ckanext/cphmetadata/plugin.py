@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import ckan.lib.helpers as h
@@ -8,6 +10,20 @@ def frequency_validator(value, context):
     if value not in ['daily', 'weekly', 'monthly', 'biannually', 'annually', 'infrequently', 'never', 'never_actual']:
         raise Invalid("Invalid frequency")
     return value
+
+def quality_validator(value, context):
+    if value not in ['good', 'medium', 'bad']:
+        raise Invalid("Invalid quality")
+    return value
+
+def get_quality_translation(quality):
+    qualmap = {
+        'good': 'Total ajourført',
+        'medium': 'Delvist ajourført',
+        'bad': 'Mangelfuldt'
+    }
+    return qualmap[quality].decode('utf8')
+
 
 def get_frequency_translation(frequency):
     #It was decided after import that the default should be '', therefore created
@@ -62,7 +78,11 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'datakk': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'date_updated': [toolkit.get_validator('ignore_missing'),
-                            toolkit.get_converter('convert_to_extras')]
+                            toolkit.get_converter('convert_to_extras')],
+            'data_quality': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'quality_note': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
         })
         return schema
 
@@ -85,7 +105,11 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'datakk': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'date_updated': [toolkit.get_validator('ignore_missing'),
-                            toolkit.get_converter('convert_to_extras')]
+                            toolkit.get_converter('convert_to_extras')],
+            'data_quality': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'quality_note': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
         })
         return schema
 
@@ -109,7 +133,11 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'datakk': [toolkit.get_converter('convert_from_extras'),
                             toolkit.get_validator('ignore_missing')],
             'date_updated': [toolkit.get_converter('convert_from_extras'),
-                            toolkit.get_validator('ignore_missing')]
+                            toolkit.get_validator('ignore_missing')],
+            'data_quality': [quality_validator,
+                            toolkit.get_converter('convert_from_extras')],
+            'quality_note': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
         })
         return schema
 
@@ -123,7 +151,8 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def get_helpers(self):
         return {
             'get_frequency_translation': get_frequency_translation,
-            'custom_render_datetime': custom_render_datetime
+            'custom_render_datetime': custom_render_datetime,
+            'get_quality_translation': get_quality_translation
         }
     
     def before_map(self, map):
