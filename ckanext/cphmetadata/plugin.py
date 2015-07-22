@@ -40,13 +40,6 @@ def get_frequency_translation(frequency):
     }
     return freqmap[frequency]
 
-def custom_render_datetime(datetime_):
-    stamp = h._datestamp_to_datetime(datetime_)
-    #Only show dates after 01.07.2015
-    if(stamp >= datetime.datetime(2015, 7, 1)):
-        return h.render_datetime(datetime_, with_hours=False)
-    return False
-
 class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IDatasetForm)
@@ -77,6 +70,8 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                             toolkit.get_converter('convert_to_extras')],
             'datakk': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
+            'date_created': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
             'date_updated': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'data_quality': [toolkit.get_validator('ignore_missing'),
@@ -103,6 +98,8 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'copenhagenkortet': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'datakk': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'date_created': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'date_updated': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
@@ -132,6 +129,8 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                             toolkit.get_validator('ignore_missing')],
             'datakk': [toolkit.get_converter('convert_from_extras'),
                             toolkit.get_validator('ignore_missing')],
+            'date_created': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
             'date_updated': [toolkit.get_converter('convert_from_extras'),
                             toolkit.get_validator('ignore_missing')],
             'data_quality': [quality_validator,
@@ -151,7 +150,6 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def get_helpers(self):
         return {
             'get_frequency_translation': get_frequency_translation,
-            'custom_render_datetime': custom_render_datetime,
             'get_quality_translation': get_quality_translation
         }
     

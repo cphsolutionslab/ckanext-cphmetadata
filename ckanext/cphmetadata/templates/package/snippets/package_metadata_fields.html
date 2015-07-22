@@ -36,6 +36,10 @@
   {{ form.input('quality_note', label=_('Data quality note'), id='field-quality-note', value=data.quality_note, error=errors.quality_note, classes=['control-medium']) }}
   {% endblock %}
 
+  {% block date_created %}
+    {{ form.input('date_created', label=_('Created'), id='field-date-created', value=data.date_created, error=errors.date_created, type='date', classes=['control-medium']) }}
+  {% endblock %}
+
   {% block date_updated %}
     {{ form.input('date_updated', label=_('Updated'), id='field-date-updated', value=data.date_updated, error=errors.date_updated, type='date', classes=['control-medium']) }}
   {% endblock %}

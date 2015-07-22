@@ -55,14 +55,11 @@
             <td class="dataset-details">{{ h.render_datetime(pkg_dict.date_updated, with_hours=False) }}</td>
           </tr>
         {% endif %}
-        {% if pkg_dict.metadata_created %}
-          {% set date_created = h.custom_render_datetime(pkg_dict.metadata_created) %}
-          {% if date_created %}
-            <tr>
-              <th scope="row" class="dataset-label">{{ _("Created") }}</th>
-              <td class="dataset-details">{{ date_created }}</td>
-            </tr>
-          {% endif %}
+        {% if pkg_dict.date_created %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Created") }}</th>
+            <td class="dataset-details">{{ h.render_datetime(pkg_dict.date_created, with_hours=False) }}</td>
+          </tr>
         {% endif %}
         {% if pkg_dict.kkkort %}
           <tr>
