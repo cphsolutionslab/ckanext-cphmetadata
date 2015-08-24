@@ -17,7 +17,7 @@ CACHE_PARAMETERS = ['__cache', '__no_cache__']
 dirty_cached_group_stuff = None
 
 '''
-This controller is extending HomeController only to remove flash message notifying users to set their e-mail address
+This controller is extending HomeController only to remove flash message notifying users to set their e-mail address, rest is unchanged
 '''
 class MetadataHomeController(HomeController):
     

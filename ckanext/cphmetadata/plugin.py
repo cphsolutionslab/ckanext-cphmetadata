@@ -144,7 +144,6 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return True
 
     def package_types(self):
-        #return ["dataset"]
         return []
 
     def get_helpers(self):
