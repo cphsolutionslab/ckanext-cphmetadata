@@ -22,7 +22,7 @@ def get_quality_translation(quality):
         'medium': 'Delvist ajourført',
         'bad': 'Mangelfuldt'
     }
-    return qualmap[quality].decode('utf8')
+    return qualmap.get(quality, '').decode('utf8')
 
 
 def get_frequency_translation(frequency):
@@ -38,7 +38,7 @@ def get_frequency_translation(frequency):
         'never': '',
         'never_actual': 'Never'
     }
-    return freqmap[frequency]
+    return freqmap.get(frequency, '')
 
 class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer)
@@ -157,7 +157,9 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         #Override new dataset so we can optionally skip resource adding
         pkg_ctrl = 'ckanext.cphmetadata.controllers.package:MetadataPackageController'
         home_ctrl = 'ckanext.cphmetadata.controllers.home:MetadataHomeController'
+        csv_ctrl = 'ckanext.cphmetadata.controllers.csv:CsvExportController'
         map.connect('add dataset', '/dataset/new', controller=pkg_ctrl, action='new')
         map.connect('home', '/', controller=home_ctrl, action='index')
+        map.connect('download csv', '/download', controller=csv_ctrl, action='download')
         return map
 

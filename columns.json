@@ -1,0 +1,21 @@
+{
+    "Title": {"pattern_path": "^title$"},
+    "Description": {"pattern_path": "^notes$"},
+    "Tags": {"pattern_path": "^tags$"},
+    "Private": {"pattern_path": "^private$"},
+    "Organization": {"pattern_path": "^organization$"},
+    "Department": {"pattern_path": "^department$"},
+    "Office": {"pattern_path": "^office$"},
+    "Maintainer": {"pattern_path": "^maintainer$"},
+    "Maintainer e-mail": {"pattern_path": "^maintainer_email$"},
+    "Data owner": {"pattern_path": "^author$"},
+    "Editing": {"pattern_path": "^editor$"},
+    "Update frequency": {"pattern_path": "^update_frequency$"},
+    "Data quality": {"pattern_path": "^data_quality$"},
+    "Quality note": {"pattern_path": "^quality_note$"},
+    "KKKort": {"pattern_path": "^kkkort$"},
+    "Copenhagenkortet": {"pattern_path": "^copenhagenkortet$"},
+    "DataKK": {"pattern_path": "^datakk$"},
+    "Date created": {"pattern_path": "^date_created$"},
+    "Date updated": {"pattern_path": "^date_updated$"}
+}
