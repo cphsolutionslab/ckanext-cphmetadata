@@ -14,7 +14,7 @@
   <label for="field-update-frequency" class="control-label">{{ _('Update Frequency') }}</label>
   <div class="controls">
     <select id="field-update_frequency" name="update_frequency">
-      {% for option in [('daily', _('Daily')), ('weekly', _('Weekly')), ('monthly', _('Monthly')), ('biannually', _('Biannually')), ('annually', _('Annually')), ('infrequently', _('Infrequently')), ('never_actual', _('Never')), ('never', '')] %}
+      {% for option in [('daily', _('Daily')), ('weekly', _('Weekly')), ('monthly', _('Monthly')), ('biannually', _('Biannually')), ('annually', _('Annually')), ('infrequently', _('Infrequently')), ('never', _('Never')), ('', '')] %}
       <option value="{{ option[0] }}" {% if option[0] == data.update_frequency %}selected="selected"{% endif %}>{{ option[1] }}</option>
       {% endfor %}
     </select>

@@ -7,7 +7,7 @@ from ckan.plugins.toolkit import Invalid
 import datetime
 
 def frequency_validator(value, context):
-    if value not in ['daily', 'weekly', 'monthly', 'biannually', 'annually', 'infrequently', 'never', 'never_actual']:
+    if value not in ['daily', 'weekly', 'monthly', 'biannually', 'annually', 'infrequently', 'never', '']:
         raise Invalid("Invalid frequency")
     return value
 
@@ -35,8 +35,7 @@ def get_frequency_translation(frequency):
         'biannually': 'Biannually',
         'annually': 'Annually',
         'infrequently': 'Infrequently',
-        'never': '',
-        'never_actual': 'Never'
+        'never': 'Never',
     }
     return freqmap.get(frequency, '')
 
