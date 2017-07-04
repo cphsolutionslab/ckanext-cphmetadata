@@ -5,9 +5,11 @@ import ckan.plugins.toolkit as toolkit
 import ckan.lib.helpers as h
 from ckan.plugins.toolkit import Invalid
 import datetime
+import uuid
+from ckan.logic import get_action
 
 def frequency_validator(value, context):
-    if value not in ['daily', 'weekly', 'monthly', 'biannually', 'annually', 'infrequently', 'never', '']:
+    if value not in ['daily', 'weekly', 'monthly','quarterly', 'biannually', 'annually','regularly', 'infrequently', 'never', '']:
         raise Invalid("Invalid frequency")
     return value
 
@@ -28,22 +30,47 @@ def get_quality_translation(quality):
 def get_frequency_translation(frequency):
     #It was decided after import that the default should be '', therefore created
     #another value for never and mapped current never to an empty string.
+    #Nicolai: Changed translations to danish as with quality
     freqmap = {
-        'daily': 'Daily',
-        'weekly': 'Weekly',
-        'monthly': 'Monthly',
-        'biannually': 'Biannually',
-        'annually': 'Annually',
-        'infrequently': 'Infrequently',
-        'never': 'Never',
+        'daily': 'Dagligt',
+        'weekly': 'Ugentligt',
+        'monthly': 'Månedligt',
+	'quarterly': 'Kvartalsvist',
+        'biannually': 'Halvårligt',
+        'annually': 'Årligt',
+        'infrequently': 'Sjældent',
+	'regularly': 'Jævnligt',
+        'never': 'Aldrig',
     }
-    return freqmap.get(frequency, '')
+    return freqmap.get(frequency, '').decode('utf8')
 
 class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IDatasetForm)
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IRoutes, inherit=True)
+    plugins.implements(plugins.IPackageController, inherit=True)  
+   
+    ## IPackageController
+    def after_create(self, context, pkg_dict):
+        """ Dataset is updated (Or created finally - after draft)
+            Assign a UUID to the dataset if possible
+        """
+	# Stupid hack because model is not comitted until after timestamps
+	# And we cant timestamp before model is created (BAD)
+	# Commit the model to the repo so we dont get internal server error
+	# Fix found on Github/ckan
+
+	if 'model' in context:
+	    context['model'].repo.commit()
+
+	#Generate a uuid4
+        metadataID = str(uuid.uuid4())
+        update_data = get_action('package_show')(context, {'id': pkg_dict['id']})
+
+        if(update_data['metadata_id'] == "" and metadataID != ""):
+            update_data['metadata_id'] = metadataID
+            get_action('package_update')(context,update_data)
 
     # IConfigurer
     def update_config(self, config_):
@@ -53,13 +80,20 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def create_package_schema(self):
         # let's grab the default schema in our plugin
+	# Department -> Center
+	# Office -> Enhed
+	
         schema = super(CphmetadataPlugin, self).create_package_schema()
         schema.update({
             'update_frequency': [frequency_validator,
                             toolkit.get_converter('convert_to_extras')],
+	    'update_frequency_note': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
             'department': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'office': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+	    'office_email': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'editor': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
@@ -76,6 +110,12 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'data_quality': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'quality_note': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+	    'bydata': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'bydata_email': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'metadata_id': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
         })
         return schema
@@ -86,9 +126,13 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         schema.update({
             'update_frequency': [frequency_validator,
                             toolkit.get_converter('convert_to_extras')],
+	    'update_frequency_note': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
             'department': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'office': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'office_email': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'editor': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
@@ -105,6 +149,12 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'data_quality': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
             'quality_note': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'bydata': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'bydata_email': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')],
+            'metadata_id': [toolkit.get_validator('ignore_missing'),
                             toolkit.get_converter('convert_to_extras')],
         })
         return schema
@@ -116,9 +166,13 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                             toolkit.get_validator('ignore_missing')],
             'update_frequency': [frequency_validator,
                             toolkit.get_converter('convert_from_extras')],
+ 	    'update_frequency_note': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
             'department': [toolkit.get_converter('convert_from_extras'),
                             toolkit.get_validator('ignore_missing')],
             'office': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
+	    'office_email': [toolkit.get_converter('convert_from_extras'),
                             toolkit.get_validator('ignore_missing')],
             'editor': [toolkit.get_converter('convert_from_extras'),
                             toolkit.get_validator('ignore_missing')],
@@ -135,6 +189,12 @@ class CphmetadataPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'data_quality': [quality_validator,
                             toolkit.get_converter('convert_from_extras')],
             'quality_note': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
+	    'bydata': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
+            'bydata_email': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')],
+            'metadata_id': [toolkit.get_converter('convert_from_extras'),
                             toolkit.get_validator('ignore_missing')],
         })
         return schema

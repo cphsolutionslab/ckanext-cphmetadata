@@ -6,25 +6,14 @@
   {% set domain = domain|replace("http://", "")|replace("https://", "") %}
   {% set attrs = {'data-module-prefix': domain, 'data-module-placeholder': '<dataset>'} %}
   {# Removed attr so field would be always visible #}
-  {{ form.prepend('name', id='field-name', label=_('Dataset name'), prepend=prefix, placeholder=_('eg. my-dataset'), value=data.name, error=errors.name, attrs=attrs, is_required=true) }}
+  {{ form.prepend('name', id='field-name', label=_('Datasæt navn'), prepend=prefix, placeholder=_('eg. my-dataset'), value=data.name, error=errors.name, attrs=attrs, is_required=true) }}
 {% endblock %}
 
-{% block package_basic_fields_custom %}
-<div class="control-group">
-  <label for="field-update-frequency" class="control-label">{{ _('Update Frequency') }}</label>
-  <div class="controls">
-    <select id="field-update_frequency" name="update_frequency">
-      {% for option in [('daily', _('Daily')), ('weekly', _('Weekly')), ('monthly', _('Monthly')), ('biannually', _('Biannually')), ('annually', _('Annually')), ('infrequently', _('Infrequently')), ('never', _('Never')), ('', '')] %}
-      <option value="{{ option[0] }}" {% if option[0] == data.update_frequency %}selected="selected"{% endif %}>{{ option[1] }}</option>
-      {% endfor %}
-    </select>
-  </div>
-</div>
-{% endblock %}
 {% block package_basic_fields_description %}
   {# Replaced markdown with textarea #}
   {{ form.textarea('notes', id='field-notes', label=_('Description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
-{% endblock %}
+{% endblock %} 
+
 {% block package_basic_fields_org %}
   {# if we have a default group then this wants remembering #}
   {% if data.group_id %}
@@ -45,7 +34,7 @@
   {% if show_organizations_selector %}
     {% set existing_org = data.owner_org or data.group_id %}
     <div class="control-group">
-      <label for="field-organizations" class="control-label">{{ _('Organization') }}</label>
+      <label for="field-organizations" class="control-label">{{ _('Forvaltning') }}</label>
       <div class="controls">
         <select id="field-organizations" name="owner_org" data-module="autocomplete">
           {% if h.check_config_permission('create_unowned_dataset') %}
@@ -59,8 +48,11 @@
         </select>
       </div>
     </div>
-  {{ form.input('department', label=_('Department'), id='field-department', value=data.department, error=errors.department, classes=['control-medium']) }}
-  {{ form.input('office', label=_('Office'), id='field-office', value=data.office, error=errors.office, classes=['control-medium']) }}
+  {#
+  {{ form.input('department', label=_('Center'), id='field-department', value=data.department, error=errors.department, classes=['control-medium']) }}
+  {{ form.input('office', label=_('Enhed'), id='field-office', value=data.office, error=errors.office, classes=['control-medium']) }}
+  {{ form.input('office_email', label=_('Enhed e-mail'), placeholder=_('enhed@eksempel.dk'), id='field-office_email', value=data.office_email, error=errors.office_email, classes=['control-medium']) }}
+  #}
   {% endif %}
 
   {% if show_visibility_selector %}

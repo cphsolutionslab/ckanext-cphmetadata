@@ -1,5 +1,6 @@
 {
     "Title": {"pattern_path": "^title$"},
+    "Name": {"pattern_path": "^name$"},
     "Description": {"pattern_path": "^notes$"},
     "Tags": {"pattern_path": "^tags$"},
     "Private": {"pattern_path": "^private$"},

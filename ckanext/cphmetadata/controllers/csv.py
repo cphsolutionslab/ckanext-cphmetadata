@@ -2,6 +2,7 @@ import os
 import pylons
 import inspect
 import losser.losser
+import re
 from ckan.logic import get_action
 from ckanext.cphmetadata.plugin import get_quality_translation, get_frequency_translation
 from ckan.controllers.admin import AdminController
@@ -17,6 +18,15 @@ class CsvExportController(AdminController):
     def transform(self, results):
         """Prepares JSON values for CSV export."""
         for result in results:
+	    if result['notes']:
+                result['notes'] = ""
+             #    result['notes'] = result['notes'].replace('"',"")
+              #   result['notes'] = result['notes'].replace("\n","")
+               #  result['notes'] = result['notes'].replace("\t","")
+                # result['notes'] = result['notes'].replace("\'","")
+                 #result['notes'] = result['notes'].replace(",","")
+		 #result['notes'] = re.sub('[\n\]','',result['notes'])
+
             result['tags'] = [tag['display_name'] for tag in result['tags']]
             if result['organization']:
                 result['organization'] = result['organization']['title']

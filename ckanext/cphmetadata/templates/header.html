@@ -97,7 +97,7 @@
           <ul class="nav nav-pills">
             {% block header_site_navigation_tabs %}
               {{ h.build_nav_main(
-                ('search', _('Metadata')),
+                ('search', _('Datakatalog')),
                 ('organizations_index', _('Organizations')),
                 ('group_index', _('Groups')),
               ) }}
@@ -109,7 +109,7 @@
       {% block header_site_search %}
         <form class="section site-search simple-input" action="{% url_for controller='package', action='search' %}" method="get">
           <div class="field">
-            <label for="field-sitewide-search">{% block header_site_search_label %}{{ _('Search Metadata') }}{% endblock %}</label>
+            <label for="field-sitewide-search">{% block header_site_search_label %}{{ _('Search Metadata')}}{% endblock %}</label>
             <input id="field-sitewide-search" type="text" name="q" placeholder="{{ _('Search') }}" />
             <button class="btn-search" type="submit"><i class="icon-search"></i></button>
           </div>

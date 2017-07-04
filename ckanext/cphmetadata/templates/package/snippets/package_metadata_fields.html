@@ -1,30 +1,9 @@
 {% import 'macros/form.html' as form %}
 
 {% block package_metadata_fields %}
-
-  {% block package_metadata_fields_maintainer %}
-    {# Renamed label to contact person #}
-    {{ form.input('maintainer', label=_('Contact person'), id='field-maintainer', placeholder=_('Joe Bloggs'), value=data.maintainer, error=errors.maintainer, classes=['control-medium']) }}
-    {{ form.input('maintainer_email', label=_('Contact e-mail'), id='field-maintainer-email', placeholder=_('joe@example.com'), value=data.maintainer_email, error=errors.maintainer_email, classes=['control-medium']) }}
-  {% endblock %}
-
-  {% block package_metadata_editor %}
-    {{ form.input('editor', label=_('Editing'), id='field-editor', value=data.editor, error=errors.editor, classes=['control-medium']) }}
-  {% endblock %}
-
-  {% block package_metadata_author %}
-    {{ form.input('author', label=_('Data owner'), id='field-author', placeholder=_('Joe Bloggs'), value=data.author, error=errors.author, classes=['control-medium']) }}
-  {% endblock %}
-
-  {% block display_source %}
-    {{ form.checkbox('kkkort', label=_('Internally at KKkort'), value='True', checked=data.kkkort=='True') }}
-    {{ form.checkbox('copenhagenkortet', label=_('Externally at Københavnerkortet'), value='True', checked=data.copenhagenkortet=='True') }}
-    {{ form.checkbox('datakk', label=_('Externally at data.kk.dk'), value='True', checked=data.datakk=='True') }}
-  {% endblock %}
-
-  {% block data_quality %}
+  {% block package_metadata_fields_actuality %}
   <div class="control-group">
-    <label for="field-data-quality" class="control-label">{{ _('Data quality') }}</label>
+    <label for="field-data-quality" class="control-label">{{ _('Datakvalitet') }}</label>
     <div class="controls">
       <select id="field-data-quality" name="data_quality">
         {% for option in [('good', _('Total ajourført')), ('medium', _('Delvist ajourført')), ('bad', _('Mangelfuldt'))] %}
@@ -33,17 +12,91 @@
       </select>
     </div>
   </div>
-  {{ form.input('quality_note', label=_('Data quality note'), id='field-quality-note', value=data.quality_note, error=errors.quality_note, classes=['control-medium']) }}
+{#  {{ form.input('quality_note', label=_('Datakvalitet note'), id='field-quality-note', value=data.quality_note, error=errors.quality_note, classes=['control-medium']) }}
+                       #}
+   {{ form.textarea('quality_note', id='field-quality-note', label=_('Datakvalitet note'), placeholder=_('fx. information omkring kvaliteten af data'), value=data.quality_note, error=errors.quality_note, classes=['control-medium']) }}
+
+<div class="control-group">
+  <label for="field-update-frequency" class="control-label">{{ _('Opdaterings-\nfrekvens') }}</label>
+  <div class="controls">
+    <select id="field-update_frequency" name="update_frequency">
+      {% for option in [('daily', _('Dagligt')), ('weekly', _('Ugenligt')), ('monthly', _('Månedligt')), ('quarterly', _('Kvartalsvist')), ('biannually', _('Halvårligt')), ('annually', _('Årligt')), ('regularly', _('Jævnligt')), ('infrequently', _('Sjældent')), ('never', _('Aldrig')), ('', '')] %}
+      <option value="{{ option[0] }}" {% if option[0] == data.update_frequency %}selected="selected"{% endif %}>{{ option[1] }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+   {{ form.textarea('update_frequency_note', id='field-update-frequency-note', label=_('Opdaterings-\nfrekvensnote'), placeholder=_('fx. information omkring opdateringsfrekvensen af data'), value=data.update_frequency_note, error=errors.update_frequency_note, classes=['control-medium']) }}
+
+
+
+{% endblock %}
+
+  {% block package_metadata_fields_maintainer %}
+    {# Renamed label to contact person #}
+    {{ form.input('maintainer', label=_('Kontaktperson'), id='field-maintainer', placeholder=_('Joe Bloggs'), value=data.maintainer, error=errors.maintainer, classes=['control-medium']) }}
+    {{ form.input('maintainer_email', label=_('Kontakt e-mail'), id='field-maintainer-email', placeholder=_('joe@example.com'), value=data.maintainer_email, error=errors.maintainer_email, classes=['control-medium']) }}
+  {% endblock %}
+  
+  {% block package_metadata_fields_office %}
+    {{ form.input('department', label=_('Center'), id='field-department', value=data.department, error=errors.department, classes=['control-medium']) }}
+    {{ form.input('office', label=_('Enhed'), id='field-office', value=data.office, error=errors.office, classes=['control-medium']) }}
+    {{ form.input('office_email', label=_('Enhed e-mail'), placeholder=_('enhed@eksempel.dk'), id='field-office_email', value=data.office_email, error=errors.office_email, classes=['control-medium']) }}
+  {% endblock %}
+  
+  {% block package_metadata_author %}
+    {{ form.input('author', label=_('Dataejer'), id='field-author', placeholder=_('Joe Bloggs'), value=data.author, error=errors.author, classes=['control-medium']) }}
+  {% endblock %}  
+
+  {% block package_metadata_fields_bydata %}
+    {# Bydata contact person #}
+    {{ form.input('bydata', label=_('Bydata'), id='field-bydata', placeholder=_('Joe Bloggs'), value=data.bydata, error=errors.bydata, classes=['control-medium']) }}
+    {{ form.input('bydata_email', label=_('Bydata e-mail'), id='field-bydata-email', placeholder=_('joe@example.com'), value=data.bydata_email, error=errors.bydata_email, classes=['control-medium']) }}
   {% endblock %}
 
+  {% block package_metadata_editor %}
+    {{ form.input('editor', label=_('Redigering'), id='field-editor', value=data.editor, error=errors.editor, classes=['control-medium']) }}
+  {% endblock %}
+
+
+  {% block display_source %}
+    <div class="control-group">
+    <label for="field-data-quality" class="control-label">{{ _('Udstilles') }}</label>
+    <br>
+    {{ form.checkbox('kkkort', label=_('Internt på kort'), value='True', checked=data.kkkort=='True') }}
+    {{ form.checkbox('copenhagenkortet', label=_('Eksternt på kort'), value='True', checked=data.copenhagenkortet=='True') }}
+    {{ form.checkbox('datakk', label=_('Dataportal'), value='True', checked=data.datakk=='True') }}
+    </div>
+  {% endblock %}
+
+{# moved to basic field
+  {% block data_quality %}
+  <div class="control-group">
+    <label for="field-data-quality" class="control-label">{{ _('Datakvalitet') }}</label>
+    <div class="controls">
+      <select id="field-data-quality" name="data_quality">
+        {% for option in [('good', _('Total ajourført')), ('medium', _('Delvist ajourført')), ('bad', _('Mangelfuldt'))] %}
+        <option value="{{ option[0] }}" {% if option[0] == data.data_quality %}selected="selected"{% endif %}>{{ option[1] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  {{ form.input('quality_note', label=_('Datakvalitet note'), id='field-quality-note', value=data.quality_note, error=errors.quality_note, classes=['control-medium']) }}
+  {% endblock %} #}
+  
+  {% block package_metadata_id %}
+    {{ form.input('metadata_id', label=_('Metadata ID'), id='field-metadata_id', placeholder=_('Lad være at opdatere dette felt'), value=data.metadata_id, error=errors.metadata_id, classes=['control-medium']) }}
+  {% endblock %}
+{# Invisible
   {% block date_created %}
     {{ form.input('date_created', label=_('Created'), id='field-date-created', value=data.date_created, error=errors.date_created, type='date', classes=['control-medium']) }}
   {% endblock %}
-
+ 
   {% block date_updated %}
     {{ form.input('date_updated', label=_('Updated'), id='field-date-updated', value=data.date_updated, error=errors.date_updated, type='date', classes=['control-medium']) }}
   {% endblock %}
-
+ #}
   {% block package_metadata_fields_custom %}
     {% block custom_fields %}
       {% snippet 'snippets/custom_form_fields.html', extras=data.extras, errors=errors, limit=1 %}
