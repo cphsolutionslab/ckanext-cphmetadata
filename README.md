@@ -4,12 +4,13 @@ ckanext-cphmetadata is [CKAN](https://github.com/ckan/ckan) extension built for 
 
 Installing
 -------
-__NB! This module is developed on CKAN v2.3.1, compatibility with other version is not ensured__
+__NB! This module is developed on CKAN v2.3.1, compatibile with v2.6.3
+
 1) Clone this repo  
 
 ```sh
 cd /usr/lib/ckan/default/src
-git clone git@github.com:cphsolutionslab/ckanext-cphmetadata.git
+git clone https://github.com/cphsolutionslab/ckanext-cphmetadata.git
 cd ckanext-cphmetadata
 python setup.py develop
 sudo nano /etc/ckan/default/production.ini
